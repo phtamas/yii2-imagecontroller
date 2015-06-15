@@ -15,7 +15,7 @@ class UrlRule extends CompositeUrlRule
     protected function createRules()
     {
         $rules = [];
-        $controller = \Yii::$app->createController($this->controllerId);
+        $controller = \Yii::$app->createController($this->controllerId)[0];
         /* @var $controller Controller */
         foreach ($controller->actions as $id => $action) {
             $rules[$this->prefix . '/' . $id . '/<filename>'] = [$this->controllerId . '/' . $id];
