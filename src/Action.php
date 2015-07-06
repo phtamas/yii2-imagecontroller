@@ -29,20 +29,25 @@ class Action extends BaseAction
     public function run($filename)
     {
         $filename = basename($filename);
-        $sourcePath = \Yii::getAlias($this->sourceDir) . '/' . $filename;
+        $sourceDir = \Yii::getAlias($this->sourceDir);
+        $destinationDir = \Yii::getAlias($this->destinationDir);
+        $sourcePath = $sourceDir . '/' . $filename;
         if (!is_file($sourcePath)) {
             throw new NotFoundHttpException();
         }
         if ($this->save) {
+            if (!is_dir($destinationDir)) {
+                mkdir($destinationDir);
+            }
             $this->imageProcessor->saveAndSend(
-                \Yii::getAlias($this->sourceDir) . '/' . $filename,
-                \Yii::getAlias($this->destinationDir) . '/' . $filename,
+                $sourcePath,
+                $destinationDir . '/' . $filename,
                 pathinfo($filename, PATHINFO_EXTENSION),
                 $this->id
             );
         } else {
             $this->imageProcessor->send(
-                \Yii::getAlias($this->sourceDir) . '/' . $filename,
+                $sourcePath,
                 pathinfo($filename, PATHINFO_EXTENSION),
                 $this->id
             );
