@@ -37,7 +37,7 @@ class Action extends BaseAction
         }
         if ($this->save) {
             if (!is_dir($destinationDir)) {
-                mkdir($destinationDir);
+                mkdir($destinationDir, 0777, true);
             }
             $this->imageProcessor->saveAndSend(
                 $sourcePath,
